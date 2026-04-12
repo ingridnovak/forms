@@ -1,17 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-
-const typeDefs = `#graphql
-  type Query {
-    hello: String
-  }
-`;
-
-const resolvers = {
-  Query: {
-    hello: () => "Forms API is running",
-  },
-};
+import { typeDefs } from "./schema.js";
+import { resolvers } from "./resolvers.js";
 
 const server = new ApolloServer({ typeDefs, resolvers });
 
