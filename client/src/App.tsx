@@ -1,24 +1,22 @@
-import { useGetFormsQuery } from "./api/generated";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout";
+import HomePage from "./pages/HomePage";
+import FormBuilderPage from "./pages/FormBuilderPage";
+import FormFillerPage from "./pages/FormFillerPage";
+import FormResponsesPage from "./pages/FormResponsesPage";
 
 function App() {
-  const { data, isLoading, error } = useGetFormsQuery();
-
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <h1 className="text-2xl font-bold mb-4">Forms</h1>
-      {isLoading && <p>Loading…</p>}
-      {error != null && <p className="text-red-600">Failed to load</p>}
-      {data && (
-        <ul className="space-y-2">
-          {data.forms.map((f) => (
-            <li key={f.id} className="border p-2 rounded">
-              <strong>{f.title}</strong>
-              {f.description && <p className="text-sm">{f.description}</p>}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/forms/new" element={<FormBuilderPage />} />
+          <Route path="/forms/:id/fill" element={<FormFillerPage />} />
+          <Route path="/forms/:id/responses" element={<FormResponsesPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
