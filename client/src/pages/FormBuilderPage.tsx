@@ -16,6 +16,11 @@ function FormBuilderPage() {
           placeholder="Form title"
           className="w-full border rounded px-3 py-2 text-lg font-semibold"
         />
+        {builder.validationErrors.title && (
+          <p className="text-sm text-red-600">
+            {builder.validationErrors.title}
+          </p>
+        )}
         <textarea
           value={builder.description}
           onChange={(e) => builder.setDescription(e.target.value)}
@@ -31,6 +36,7 @@ function FormBuilderPage() {
             key={question.id}
             question={question}
             index={index}
+            error={builder.validationErrors.questions?.[question.id]}
             onChange={(patch) => builder.updateQuestion(question.id, patch)}
             onRemove={() => builder.removeQuestion(question.id)}
             onAddOption={() => builder.addOption(question.id)}
