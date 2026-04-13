@@ -88,7 +88,9 @@ export function useFormBuilder() {
     );
   };
 
-  const canSubmit = title.trim().length > 0 && questions.length > 0;
+  const validationErrors = validateDraft(title, questions);
+  const canSubmit =
+    Object.keys(validationErrors).length === 0 && questions.length > 0;
 
   const submit = async () => {
     if (!canSubmit) return;
@@ -123,7 +125,44 @@ export function useFormBuilder() {
     updateOption,
     submit,
     canSubmit,
+    validationErrors,
     isSubmitting,
     submitError,
   };
+}
+
+export type ValidationErrors = {
+  title?: string;
+  questions?: Record<string, string>;
+};
+
+function validateDraft(
+  title: string,
+  questions: DraftQuestion[],
+): ValidationErrors {
+  const errors: ValidationErrors = {};
+
+  if (title.trim().length === 0) {
+    errors.title = "Title is required";
+  }
+
+  const questionErrors: Record<string, string> = {};
+  for (const q of questions) {
+    if (q.text.trim().length === 0) {
+      questionErrors[q.id] = "Question text is required";
+      continue;
+    }
+    if (questionNeedsOptions(q.type)) {
+      const nonEmptyOptions = q.options.filter((o) => o.trim().length > 0);
+      if (nonEmptyOptions.length === 0) {
+        questionErrors[q.id] = "Add at least one option";
+      }
+    }
+  }
+
+  if (Object.keys(questionErrors).length > 0) {
+    errors.questions = questionErrors;
+  }
+
+  return errors;
 }

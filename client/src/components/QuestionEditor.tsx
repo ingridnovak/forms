@@ -9,6 +9,7 @@ import {
 type Props = {
   question: DraftQuestion;
   index: number;
+  error?: string;
   onChange: (patch: Partial<DraftQuestion>) => void;
   onRemove: () => void;
   onAddOption: () => void;
@@ -19,6 +20,7 @@ type Props = {
 function QuestionEditor({
   question,
   index,
+  error,
   onChange,
   onRemove,
   onAddOption,
@@ -59,6 +61,8 @@ function QuestionEditor({
           </option>
         ))}
       </select>
+
+      {error && <p className="text-sm text-red-600">{error}</p>}
 
       {showOptions && (
         <div className="space-y-2 pl-4 border-l-2">
