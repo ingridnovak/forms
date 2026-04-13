@@ -59,6 +59,28 @@ npm run dev:server    # only server
 npm start             # alias for dev:client
 ```
 
+## Testing
+
+Run all tests (server + client):
+
+```bash
+npm test
+```
+
+Run one workspace at a time:
+
+```bash
+npm test -w server    # 4 tests — store and resolvers
+npm test -w client    # 8 tests — helpers, validation, component
+```
+
+**What's covered**
+
+- **Server** — `createForm` generates unique ids, `listResponses` filters correctly, `createForm` resolver round-trips a form through the store, and `submitResponse` throws when the target form is missing.
+- **Client** — `questionNeedsOptions` helper, the `validateDraft` rules (title, question text, choice options, happy path), and `QuestionInput` polymorphism (TEXT/MC/CHECKBOX each render and emit the right array shape).
+
+Both workspaces use **Vitest**; the client additionally uses **@testing-library/react** with **jsdom**.
+
 ## Regenerating GraphQL types and hooks
 
 Whenever the schema or any `.graphql` operation file changes, regenerate the typed RTK Query hooks. The server must be running.

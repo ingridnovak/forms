@@ -14,11 +14,11 @@ export type DraftQuestion = {
 
 const newId = () => crypto.randomUUID();
 
-const createEmptyQuestion = (): DraftQuestion => ({
+const createEmptyQuestion = (type: QuestionType = "TEXT"): DraftQuestion => ({
   id: newId(),
   text: "",
-  type: "TEXT",
-  options: [],
+  type,
+  options: questionNeedsOptions(type) ? [""] : [],
 });
 
 export function useFormBuilder() {
@@ -33,8 +33,8 @@ export function useFormBuilder() {
     createEmptyQuestion(),
   ]);
 
-  const addQuestion = () => {
-    setQuestions((prev) => [...prev, createEmptyQuestion()]);
+  const addQuestion = (type: QuestionType = "TEXT") => {
+    setQuestions((prev) => [...prev, createEmptyQuestion(type)]);
   };
 
   const removeQuestion = (id: string) => {
@@ -136,7 +136,7 @@ export type ValidationErrors = {
   questions?: Record<string, string>;
 };
 
-function validateDraft(
+export function validateDraft(
   title: string,
   questions: DraftQuestion[],
 ): ValidationErrors {
