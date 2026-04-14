@@ -1,7 +1,4 @@
-import {
-  useGetFormQuery,
-  useGetResponsesQuery,
-} from "../api/generated";
+import { useGetFormQuery, useGetResponsesQuery } from "../api/api";
 
 export function useFormResponses(formId: string | undefined) {
   const formQuery = useGetFormQuery(

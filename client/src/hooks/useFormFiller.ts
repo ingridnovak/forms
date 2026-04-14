@@ -1,16 +1,12 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import {
   useGetFormQuery,
   useSubmitResponseMutation,
-} from "../api/generated";
-import { baseApi } from "../api/baseApi";
+} from "../api/api";
 
 export type AnswerMap = Record<string, string[]>;
 
 export function useFormFiller(formId: string | undefined) {
-  const dispatch = useDispatch();
-
   const { data, isLoading, error } = useGetFormQuery(
     { id: formId ?? "" },
     { skip: !formId },
@@ -37,7 +33,6 @@ export function useFormFiller(formId: string | undefined) {
           values: answers[q.id] ?? [],
         })),
       }).unwrap();
-      dispatch(baseApi.util.invalidateTags(["Response"]));
     } catch {
       // captured by submitError
     }

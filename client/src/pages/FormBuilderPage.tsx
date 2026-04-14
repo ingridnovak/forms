@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, Save, CheckCircle } from "lucide-react";
 import { useFormBuilder } from "../hooks/useFormBuilder";
 import QuestionEditor from "../components/QuestionEditor";
 import QuestionTypeIcon from "../components/QuestionTypeIcon";
@@ -10,6 +10,22 @@ import {
 
 function FormBuilderPage() {
   const builder = useFormBuilder();
+
+  if (builder.isSuccess) {
+    return (
+      <div className="bg-white rounded-xl p-8 text-center max-w-md mx-auto">
+        <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+        <h2 className="font-medium mb-2">Form saved successfully!</h2>
+        <p className="text-gray-500 mb-6">Your form has been created.</p>
+        <Link
+          to="/"
+          className="inline-block px-5 py-2 bg-[#673ab7] text-white rounded-full hover:bg-[#5e35a1] transition-colors"
+        >
+          Back to Home
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">

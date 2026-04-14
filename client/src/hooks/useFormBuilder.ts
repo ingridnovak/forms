@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useCreateFormMutation, type QuestionType } from "../api/generated";
-import { baseApi } from "../api/baseApi";
+import { useCreateFormMutation } from "../api/api";
+import type { QuestionType } from "../api/generated";
 import { questionNeedsOptions } from "../utils/questionTypes";
 
 export type DraftQuestion = {
@@ -22,10 +20,10 @@ const createEmptyQuestion = (type: QuestionType = "TEXT"): DraftQuestion => ({
 });
 
 export function useFormBuilder() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [createForm, { isLoading: isSubmitting, error: submitError }] =
-    useCreateFormMutation();
+  const [
+    createForm,
+    { isLoading: isSubmitting, isSuccess, error: submitError },
+  ] = useCreateFormMutation();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -104,8 +102,6 @@ export function useFormBuilder() {
           options: questionNeedsOptions(q.type) ? q.options : null,
         })),
       }).unwrap();
-      dispatch(baseApi.util.invalidateTags(["Form"]));
-      navigate("/");
     } catch {
       // error is captured in submitError
     }
@@ -127,6 +123,7 @@ export function useFormBuilder() {
     canSubmit,
     validationErrors,
     isSubmitting,
+    isSuccess,
     submitError,
   };
 }
