@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { FileText, Plus } from "lucide-react";
-import { useGetFormsQuery } from "../api/generated";
+import { useGetFormsQuery } from "../api/api";
 import FormListItem from "../components/FormListItem";
 
 function HomePage() {
